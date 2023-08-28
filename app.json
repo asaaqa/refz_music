@@ -48,7 +48,7 @@
       },
       "UPSTREAM_REPO": {
       "description": "رمز السورس لا تغيره ابدا",
-      "value": "https://github.com/asaaqaa/refz_music",
+      "value": "https://github.com/asaaqa/refz_music",
       "required": false
       } 
       }, 

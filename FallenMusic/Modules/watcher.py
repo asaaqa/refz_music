@@ -69,14 +69,7 @@ async def swr_handler(_, chat_id: int):
 async def on_stream_end(pytgcalls, update: Update):
     chat_id = update.chat_id
 
-    get = fallendb.get(chat_id)
-    if not get:
-        try:
-            await _clear_(chat_id)
-            return await pytgcalls.leave_group_call(chat_id)
-        except:
-            return
-    else:
+    if get := fallendb.get(chat_id):
         process = await app.send_message(
             chat_id=chat_id,
             text="⎊ تنزيل المسار التالي من قائمة الانتظار...",
@@ -108,3 +101,9 @@ async def on_stream_end(pytgcalls, update: Update):
             caption=f"‌‌‏‌‌‏‌‌‏≪⊶⌯━‌‌‏♢ ⦓ ⦓ 𝐒𝐎𝐔𝐑𝐂𝐄 𝑺𝑶𝑯𝑨 🜪 ⦔ 𖤛⦔ ♢━‌‌‏⌯⊷≫\n**⎊ بـدأ التشغيل ✅**\n\n⎊ **العنوان :** [{title[:27]}](https://t.me/{BOT_USERNAME}?start=info_{videoid})\n⎊ **المدة :** `{duration}` دقيقه\n⎊ **بواسطه :** {req_by}\n‌‌‏‌‌‏‌‌‏≪⊶⌯━‌‌‏♢ ⦓ 𝐒𝐎𝐔𝐑𝐂𝐄 𝑺𝑶𝑯𝑨  𖤛⦔ ♢━‌‌‏⌯⊷≫",
             reply_markup=buttons,
         )
+    else:
+        try:
+            await _clear_(chat_id)
+            return await pytgcalls.leave_group_call(chat_id)
+        except:
+            return

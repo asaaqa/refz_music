@@ -35,18 +35,7 @@ async def skip_str(_, message: Message):
         await message.delete()
     except:
         pass
-    get = fallendb.get(message.chat.id)
-    if not get:
-        try:
-            await _clear_(message.chat.id)
-            await pytgcalls.leave_group_call(message.chat.id)
-            await message.reply_text(
-                text=f"⎊ الـتـالـي ⚡\n \n⎊ بواسطة : {message.from_user.mention} 🥀\n\n**⎊ مفيش اغاني** {message.chat.title}, **🕷**",
-                reply_markup=close_key,
-            )
-        except:
-            return
-    else:
+    if get := fallendb.get(message.chat.id):
         title = get[0]["title"]
         duration = get[0]["duration"]
         file_path = get[0]["file_path"]
@@ -75,3 +64,13 @@ async def skip_str(_, message: Message):
             caption=f"‌‌‏‌‌‏‌‌‏≪⊶⌯━‌‌‏♢⦓𝐒𝐎𝐔𝐑𝐂𝐄 𝑺𝑶𝑯𝑨✺⦔♢━‌‌‏⌯⊷≫\n**⎊ تـم الـتـشـغـيـل ✅**\n\n⎊ **العنوان :** [{title[:27]}](https://t.me/{BOT_USERNAME}?start=info_{videoid})\n⎊ **المدة :** `{duration}` دقيقه\n⎊ **بواسطه :** {req_by}\n‌‌‏‌‌‏≪⊶⌯━‌‌‏♢⦓𝐒𝐎𝐔𝐑𝐂𝐄 𝑺𝑶𝑯𝑨✺⦔♢━‌‌‏⌯⊷≫",
             reply_markup=buttons,
         )
+    else:
+        try:
+            await _clear_(message.chat.id)
+            await pytgcalls.leave_group_call(message.chat.id)
+            await message.reply_text(
+                text=f"⎊ الـتـالـي ⚡\n \n⎊ بواسطة : {message.from_user.mention} 🥀\n\n**⎊ مفيش اغاني** {message.chat.title}, **🕷**",
+                reply_markup=close_key,
+            )
+        except:
+            return

@@ -36,11 +36,11 @@ async def broadcast(_, message: Message):
     if message.reply_to_message:
         x = message.reply_to_message.id
         y = message.chat.id
+    elif len(message.command) < 2:
+        return await message.reply_text(
+            "**مثال:**\n\nاكتب اذاعه + الرساله او اعمل ريب واكتب اذاعه"
+        )
     else:
-        if len(message.command) < 2:
-            return await message.reply_text(
-                "**مثال:**\n\nاكتب اذاعه + الرساله او اعمل ريب واكتب اذاعه"
-            )
         query = message.text.split(None, 1)[1]
     sent = 0
     chats = []

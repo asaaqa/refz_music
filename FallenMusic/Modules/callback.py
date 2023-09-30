@@ -131,19 +131,7 @@ async def admin_cbs(_, query: CallbackQuery):
         await query.message.delete()
 
     elif data == "skip_cb":
-        get = fallendb.get(query.message.chat.id)
-        if not get:
-            try:
-                await _clear_(query.message.chat.id)
-                await pytgcalls.leave_group_call(query.message.chat.id)
-                await query.message.reply_text(
-                    text=f"⎊ تخطي الاغنية 🥺\n \n⎊ بواسطة : {query.from_user.mention} 🥀\n\n**⎊ لا يوجد اغنية تالية في قائمة الانتظار ** {query.message.chat.title}, **ترك دردشة الفيديو**",
-                    reply_markup=close_key,
-                )
-                return await query.message.delete()
-            except:
-                return
-        else:
+        if get := fallendb.get(query.message.chat.id):
             title = get[0]["title"]
             duration = get[0]["duration"]
             videoid = get[0]["videoid"]
@@ -173,6 +161,17 @@ async def admin_cbs(_, query: CallbackQuery):
                 caption=f"**⎊ بدء تشغيل**\n\n⎊ **العنوان :** [{title[:27]}](https://t.me/{BOT_USERNAME}?start=info_{videoid})\n⎊ **المدة :** `{duration}` دقيقة\n⎊ **مطلوبة من :** {req_by}",
                 reply_markup=buttons,
             )
+        else:
+            try:
+                await _clear_(query.message.chat.id)
+                await pytgcalls.leave_group_call(query.message.chat.id)
+                await query.message.reply_text(
+                    text=f"⎊ تخطي الاغنية 🥺\n \n⎊ بواسطة : {query.from_user.mention} 🥀\n\n**⎊ لا يوجد اغنية تالية في قائمة الانتظار ** {query.message.chat.title}, **ترك دردشة الفيديو**",
+                    reply_markup=close_key,
+                )
+                return await query.message.delete()
+            except:
+                return
 
 
 @app.on_callback_query(filters.regex("unban_ass"))
@@ -181,22 +180,21 @@ async def unban_ass(_, CallbackQuery):
     callback_request = callback_data.split(None, 1)[1]
     chat_id, user_id = callback_request.split("|")
     umm = (await app.get_chat_member(int(chat_id), BOT_ID)).privileges
-    if umm.can_restrict_members:
-        try:
-            await app.unban_chat_member(int(chat_id), ASS_ID)
-        except:
-            return await CallbackQuery.answer(
-                "⎊ فشل الحساب المساعد محظور",
-                show_alert=True,
-            )
-        return await CallbackQuery.edit_message_text(
-            f"⎊ {ASS_NAME} تم رفع الحظر بنجاح بواسطة {CallbackQuery.from_user.mention}.\n\⎊ البوت يعمل الان ⚡"
-        )
-    else:
+    if not umm.can_restrict_members:
         return await CallbackQuery.answer(
             "⎊ ليس لدي أذونات لإلغاء حظر المستخدمين في هذه الدردشة ",
             show_alert=True,
         )
+    try:
+        await app.unban_chat_member(int(chat_id), ASS_ID)
+    except:
+        return await CallbackQuery.answer(
+            "⎊ فشل الحساب المساعد محظور",
+            show_alert=True,
+        )
+    return await CallbackQuery.edit_message_text(
+        f"⎊ {ASS_NAME} تم رفع الحظر بنجاح بواسطة {CallbackQuery.from_user.mention}.\n\⎊ البوت يعمل الان ⚡"
+    )
 
 
 @app.on_callback_query(filters.regex("fallen_help"))

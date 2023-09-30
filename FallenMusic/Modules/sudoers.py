@@ -88,7 +88,7 @@ async def sudodel(_, message: Message):
                 f"⎊ إزالة  {user.mention} من قائمة المطورين ."
             )
         except:
-            return await message.reply_text(f"فشل إزالة المستخدم من المطوىين.")
+            return await message.reply_text("فشل إزالة المستخدم من المطوىين.")
     else:
         user_id = message.reply_to_message.from_user.id
         if int(user_id) not in SUDOERS:
@@ -101,17 +101,16 @@ async def sudodel(_, message: Message):
                 f"⎊ ليس {message.reply_to_message.from_user.mention} من قائمة المطورين."
             )
         except:
-            return await message.reply_text(f"فشل إزالة المستخدم من قائمة المطورين.")
+            return await message.reply_text("فشل إزالة المستخدم من قائمة المطورين.")
 
 
 @app.on_message(filters.command(["sudolist", "sudoers", "sudo"]) | filters.command(["المطورين","قائمه المطورين"],prefixes= ["/", "!","","#"]))
 async def sudoers_list(_, message: Message):
     hehe = await message.reply_text("⎊ جارٍ الحصول على قائمة المطورين...")
     text = "<u>⎊ **المالك :**</u>\n"
-    count = 0
     user = await app.get_users(OWNER_ID)
     user = user.first_name if not user.mention else user.mention
-    count += 1
+    count = 0 + 1
     text += f"{count}➤ {user}\n"
     smex = 0
     for user_id in SUDOERS:

@@ -37,10 +37,8 @@ buttons = InlineKeyboardMarkup(
             InlineKeyboardButton(text="ll", callback_data="pause_cb"),
             InlineKeyboardButton(text="‣‣I", callback_data="skip_cb"),
             InlineKeyboardButton(text="▢", callback_data="end_cb"),
-            ],
-            [
-            InlineKeyboardButton("⦓𝐒𝐎𝐔𝐑𝐂𝐄 𝑺𝑶𝑯𝑨⦔", url=f"https://t.me/Mlze1bot"),
-        ]
+        ],
+        [InlineKeyboardButton("⦓𝐒𝐎𝐔𝐑𝐂𝐄 𝑺𝑶𝑯𝑨⦔", url="https://t.me/Mlze1bot")],
     ]
 )
 
